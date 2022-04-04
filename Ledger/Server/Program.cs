@@ -1,4 +1,6 @@
-using Microsoft.AspNetCore.ResponseCompression;
+using Ledger.Server;
+using Ledger.Shared.Model;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+builder.Services.AddDbContext<BookkeepingContext>(option => option.UseSqlServer(builder.Configuration["ConnectionStrings:DefaultConnection"]));
+builder.Services.Configure<LineBot>(builder.Configuration.GetSection("LineBot"));
 
 var app = builder.Build();
 
@@ -19,9 +23,8 @@ else
     app.UseExceptionHandler("/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
+    app.UseHttpsRedirection();
 }
-
-app.UseHttpsRedirection();
 
 app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
