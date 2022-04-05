@@ -19,5 +19,5 @@ public interface IBookkeepingService
     /// <param name="model"></param>
     /// <param name="user"></param>
     /// <returns></returns>
-    public Task<string> DeleteAccounting(AccountingFlexMessageModel model, User user);
+    public Task<string> DeleteAccounting(ConfirmModel model, User user);
 }

@@ -149,7 +149,7 @@ public static class LineFlexTemplate
             ""action"": {{
               ""type"": ""postback"",
               ""label"": ""刪除"",
-              ""data"": ""{Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(model)))}""
+              ""data"": ""{model.AccountId}""
             }},
             ""margin"": ""5px"",
             ""style"": ""primary"",
@@ -183,7 +183,7 @@ public static class LineFlexTemplate
   }}
 }}");
 
-    public static string DeleteAccountingComfirm(AccountingFlexMessageModel model) =>
+    public static string DeleteAccountingComfirm(ConfirmModel model) =>
         FlexMessage($@"
 {{
   ""type"": ""bubble"",
@@ -252,7 +252,7 @@ public static class LineFlexTemplate
             ""action"": {{
             ""type"": ""postback"",
               ""label"": ""確定"",
-              ""data"": ""{Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(model)))}""
+              ""data"": ""{model.AccountId}""
             }},
             ""color"": ""#DC3545"",
             ""style"": ""primary"",

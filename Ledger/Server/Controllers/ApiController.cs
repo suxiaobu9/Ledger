@@ -2,12 +2,11 @@
 using Ledger.Server.LineVerify;
 using Ledger.Shared.Model;
 using Ledger.Shared.Service.Bookkeeping;
+using Ledger.Shared.Service.Delete;
 using Ledger.Shared.Service.Member;
 using Ledger.Shared.StaticCode;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using System.Text;
-using System.Text.Json;
 
 namespace Ledger.Server.Controllers;
 
@@ -19,13 +18,16 @@ public class ApiController : LineWebHookControllerBase
 {
     private readonly IUserService _userService;
     private readonly IBookkeepingService _bookkeepingService;
+    private readonly IDeleteAccountService _deleteAccountService;
 
     public ApiController(IUserService userService,
                         IBookkeepingService bookkeepingService,
+                        IDeleteAccountService deleteAccountService,
                         IOptions<LineBot> linebot)
     {
         _userService = userService;
         _bookkeepingService = bookkeepingService;
+        _deleteAccountService = deleteAccountService;
         this.ChannelAccessToken = linebot.Value.ChannelAccessToken;
     }
 
@@ -86,21 +88,23 @@ public class ApiController : LineWebHookControllerBase
     /// <returns></returns>
     private async Task PostBack(isRock.LineBot.Event lineEvent, User user)
     {
-        var jsonData = Encoding.UTF8.GetString(Convert.FromBase64String(lineEvent.postback.data));
-        var model = JsonSerializer.Deserialize<AccountingFlexMessageModel>(jsonData);
+        var convertSuccess = int.TryParse(lineEvent.postback.data, out int accountId);
 
-        if (model == null)
+        if (!convertSuccess)
             return;
 
-        if (!model.IsConfirm)
+        var (isConfirm, confirmModel) = await _deleteAccountService.IsConfirm(accountId);
+
+        if (confirmModel == null)
+            return;
+
+        if (!isConfirm)
         {
-            model.IsConfirm = true;
-            model.Deadline = DateTime.UtcNow.AddMinutes(2);
-            ReplyMessageWithJSON(lineEvent.replyToken, LineFlexTemplate.DeleteAccountingComfirm(model));
+            ReplyMessageWithJSON(lineEvent.replyToken, LineFlexTemplate.DeleteAccountingComfirm(confirmModel));
             return;
         }
 
-        var message = await _bookkeepingService.DeleteAccounting(model, user);
+        var message = await _bookkeepingService.DeleteAccounting(confirmModel, user);
 
         ReplyMessage(lineEvent.replyToken, message);
     }

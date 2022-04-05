@@ -157,17 +157,16 @@ public class BookkeepingService : IBookkeepingService
     /// <param name="model"></param>
     /// <param name="user"></param>
     /// <returns></returns>
-    public async Task<string> DeleteAccounting(AccountingFlexMessageModel model, User user)
+    public async Task<string> DeleteAccounting(ConfirmModel model, User user)
     {
-        var utcNow = DateTime.UtcNow;
-        if (utcNow > model.Deadline)
-            return "刪除失敗，請重新刪除，並於 2 分鐘內按下確定";
-
         var accounting = await _db.Accountings.FirstOrDefaultAsync(x => x.UserId == user.Id && x.Id == model.AccountId);
 
         if (accounting == null)
             return "刪除成功";
 
+        var deleteEvent = await _db.DeleteAccounts.Where(x => x.AccountId == model.AccountId).ToListAsync();
+
+        _db.DeleteAccounts.RemoveRange(deleteEvent);
         _db.Accountings.Remove(accounting);
 
         await _db.SaveChangesAsync();

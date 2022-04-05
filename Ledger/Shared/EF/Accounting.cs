@@ -5,6 +5,11 @@ namespace Ledger.Server
 {
     public partial class Accounting
     {
+        public Accounting()
+        {
+            DeleteAccounts = new HashSet<DeleteAccount>();
+        }
+
         public int Id { get; set; }
         public int Amount { get; set; }
         public int EventId { get; set; }
@@ -14,5 +19,6 @@ namespace Ledger.Server
 
         public virtual Event Event { get; set; } = null!;
         public virtual User User { get; set; } = null!;
+        public virtual ICollection<DeleteAccount> DeleteAccounts { get; set; }
     }
 }

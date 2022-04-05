@@ -17,6 +17,7 @@ namespace Ledger.Server
         }
 
         public virtual DbSet<Accounting> Accountings { get; set; } = null!;
+        public virtual DbSet<DeleteAccount> DeleteAccounts { get; set; } = null!;
         public virtual DbSet<Event> Events { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
 
@@ -45,6 +46,19 @@ namespace Ledger.Server
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Accounting_User");
+            });
+
+            modelBuilder.Entity<DeleteAccount>(entity =>
+            {
+                entity.ToTable("DeleteAccount");
+
+                entity.Property(e => e.Deadline).HasColumnType("datetime");
+
+                entity.HasOne(d => d.Account)
+                    .WithMany(p => p.DeleteAccounts)
+                    .HasForeignKey(d => d.AccountId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_DeleteAccount_Accounting");
             });
 
             modelBuilder.Entity<Event>(entity =>

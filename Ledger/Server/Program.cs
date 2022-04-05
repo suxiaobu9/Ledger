@@ -1,6 +1,7 @@
 using Ledger.Server;
 using Ledger.Shared.Model;
 using Ledger.Shared.Service.Bookkeeping;
+using Ledger.Shared.Service.Delete;
 using Ledger.Shared.Service.EventService;
 using Ledger.Shared.Service.Member;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +26,7 @@ builder.Services.Configure<LineBot>(builder.Configuration.GetSection("LineBot"))
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddScoped<IBookkeepingService, BookkeepingService>();
+builder.Services.AddScoped<IDeleteAccountService, DeleteAccountService>();
 
 var app = builder.Build();
 
