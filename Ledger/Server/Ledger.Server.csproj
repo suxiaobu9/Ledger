@@ -26,5 +26,11 @@
     <ProjectReference Include="..\Shared\Ledger.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="App_Offline_Close.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 
 </Project>
