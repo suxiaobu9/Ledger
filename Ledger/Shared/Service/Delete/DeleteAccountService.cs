@@ -37,7 +37,7 @@ public class DeleteAccountService : IDeleteAccountService
         var result = new ConfirmModel
         {
             AccountId = accountId,
-            EventName = account.Event.Name,
+            EventName = account.Event,
             Pay = account.Amount
         };
 

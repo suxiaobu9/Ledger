@@ -18,7 +18,6 @@ namespace Ledger.Server
 
         public virtual DbSet<Accounting> Accountings { get; set; } = null!;
         public virtual DbSet<DeleteAccount> DeleteAccounts { get; set; } = null!;
-        public virtual DbSet<Event> Events { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -35,11 +34,7 @@ namespace Ledger.Server
 
                 entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
-                entity.HasOne(d => d.Event)
-                    .WithMany(p => p.Accountings)
-                    .HasForeignKey(d => d.EventId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Accounting_Event");
+                entity.Property(e => e.Event).HasMaxLength(50);
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Accountings)
@@ -59,21 +54,6 @@ namespace Ledger.Server
                     .HasForeignKey(d => d.AccountId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_DeleteAccount_Accounting");
-            });
-
-            modelBuilder.Entity<Event>(entity =>
-            {
-                entity.ToTable("Event");
-
-                entity.HasIndex(e => e.UserId, "IX_Event");
-
-                entity.Property(e => e.Name).HasMaxLength(100);
-
-                entity.HasOne(d => d.User)
-                    .WithMany(p => p.Events)
-                    .HasForeignKey(d => d.UserId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Event_User");
             });
 
             modelBuilder.Entity<User>(entity =>
