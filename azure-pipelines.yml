@@ -12,7 +12,6 @@ pool:
 variables:
   buildConfiguration: 'Release'
   EnvironmentName: 'Production'
-  
 
 steps:
 - script: dotnet publish --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory) /p:EnvironmentName=$(EnvironmentName)
