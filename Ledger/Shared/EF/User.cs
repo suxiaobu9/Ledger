@@ -8,7 +8,6 @@ namespace Ledger.Server
         public User()
         {
             Accountings = new HashSet<Accounting>();
-            Events = new HashSet<Event>();
         }
 
         public int Id { get; set; }
@@ -17,6 +16,5 @@ namespace Ledger.Server
         public bool IsAdmin { get; set; }
 
         public virtual ICollection<Accounting> Accountings { get; set; }
-        public virtual ICollection<Event> Events { get; set; }
     }
 }

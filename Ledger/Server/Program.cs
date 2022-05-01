@@ -2,7 +2,6 @@ using Ledger.Server;
 using Ledger.Shared.Model;
 using Ledger.Shared.Service.Bookkeeping;
 using Ledger.Shared.Service.Delete;
-using Ledger.Shared.Service.EventService;
 using Ledger.Shared.Service.Member;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,7 +23,6 @@ builder.Services.Configure<LineBot>(builder.Configuration.GetSection("LineBot"))
 //只會在站台啟動時注入一個新的
 //services.AddSingleton
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddScoped<IBookkeepingService, BookkeepingService>();
 builder.Services.AddScoped<IDeleteAccountService, DeleteAccountService>();
 

@@ -1,27 +1,18 @@
 ﻿using Ledger.Server;
 using Ledger.Shared.Model;
-using Ledger.Shared.Service.EventService;
 using Ledger.Shared.StaticCode;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Ledger.Shared.Service.Bookkeeping;
 
 public class BookkeepingService : IBookkeepingService
 {
     private readonly BookkeepingContext _db;
-    private readonly IEventService _eventService;
 
-    public BookkeepingService(BookkeepingContext db,
-                                IEventService eventService)
+    public BookkeepingService(BookkeepingContext db)
     {
         _db = db;
-        _eventService = eventService;
     }
 
     /// <summary>
@@ -49,7 +40,6 @@ public class BookkeepingService : IBookkeepingService
 
         var eventName = "其他";
         int amount = 0;
-        Event payEvent;
         switch (messsageSplit.Length)
         {
             case 1:
@@ -60,7 +50,6 @@ public class BookkeepingService : IBookkeepingService
                 // 正負整數
                 if (Regex.Match(messsageSplit[0], @"^-?\d+$").Success)
                 {
-                    payEvent = await _eventService.CreateAndGetEvent(eventName, user.Id);
                     amount = Convert.ToInt32(messsageSplit[0]);
                     break;
                 }
@@ -104,8 +93,6 @@ public class BookkeepingService : IBookkeepingService
                     eventName = messsageSplit[1];
                 }
 
-                payEvent = await _eventService.CreateAndGetEvent(eventName, user.Id);
-
                 break;
             default:
                 return (false, "訊息長度異常 !");
@@ -117,7 +104,7 @@ public class BookkeepingService : IBookkeepingService
             CreateDate = utcNow,
             Amount = amount,
             UserId = user.Id,
-            EventId = payEvent.Id,
+            Event = eventName,
         };
         _db.Accountings.Add(accounting);
 
@@ -142,7 +129,7 @@ public class BookkeepingService : IBookkeepingService
             AccountId = accounting.Id,
             MonthlyPay = monthlyAccountings.Where(x => x.Amount > 0).Sum(x => x.Amount),
             MonthlyIncome = monthlyAccountings.Where(x => x.Amount < 0).Sum(x => x.Amount) * -1,
-            EventName = payEvent.Name,
+            EventName = accounting.Event,
             Pay = amount,
             CreateDate = utcNow.AddHours(8),
             IsConfirm = false
