@@ -28,7 +28,6 @@ public class DeleteAccountService : IDeleteAccountService
         var utcNow = DateTime.UtcNow;
 
         var account = await _db.Accountings
-          .Include(x => x.Event)
           .FirstOrDefaultAsync(x => x.Id == accountId);
 
         if (account == null)
