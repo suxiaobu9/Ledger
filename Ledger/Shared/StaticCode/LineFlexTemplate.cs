@@ -11,7 +11,7 @@ public static class LineFlexTemplate
     ""type"": ""flex"",
     ""altText"": ""記帳明細"",
     ""contents"":
-        {{message}}
+        {message}
 }}]
 
 ";
@@ -52,7 +52,7 @@ public static class LineFlexTemplate
           }},
           {{
             ""type"": ""text"",
-            ""text"": ""{{model.MonthlyPay}}"",
+            ""text"": ""{model.MonthlyPay}"",
             ""size"": ""xs"",
             ""color"": ""#aaaaaa"",
             ""align"": ""end""
@@ -75,7 +75,7 @@ public static class LineFlexTemplate
           }},
           {{
             ""type"": ""text"",
-            ""text"": ""{{model.MonthlyIncome}}"",
+            ""text"": ""{model.MonthlyIncome}"",
             ""size"": ""xs"",
             ""color"": ""#aaaaaa"",
             ""align"": ""end""
@@ -107,7 +107,7 @@ public static class LineFlexTemplate
               }},
               {{
                 ""type"": ""text"",
-                ""text"": ""{{model.EventName}}"",
+                ""text"": ""{model.EventName}"",
                 ""size"": ""sm"",
                 ""color"": ""#111111"",
                 ""align"": ""end""
@@ -127,7 +127,7 @@ public static class LineFlexTemplate
               }},
               {{
                 ""type"": ""text"",
-                ""text"": ""{{model.Pay}}"",
+                ""text"": ""{model.Pay}"",
                 ""size"": ""sm"",
                 ""color"": ""#111111"",
                 ""align"": ""end""
@@ -153,7 +153,7 @@ public static class LineFlexTemplate
                 ""action"": {{
                   ""type"": ""postback"",
                   ""label"": ""刪除"",
-                  ""data"": ""{{model.AccountId}}""
+                  ""data"": ""{model.AccountId}""
                 }},
                 ""margin"": ""5px"",
                 ""style"": ""primary"",
@@ -194,7 +194,7 @@ public static class LineFlexTemplate
         ""contents"": [
           {{
             ""type"": ""text"",
-            ""text"": ""{{model.CreateDate:yyyy-MM-dd HH:mm}}"",
+            ""text"": ""{model.CreateDate:yyyy-MM-dd HH:mm}"",
             ""color"": ""#aaaaaa"",
             ""size"": ""xxs"",
             ""align"": ""end""
@@ -240,7 +240,7 @@ public static class LineFlexTemplate
           }},
           {{
         ""type"": ""text"",
-            ""text"": ""{{model.EventName}}"",
+            ""text"": ""{model.EventName}"",
             ""align"": ""end"",
             ""size"": ""sm""
           }}
@@ -259,7 +259,7 @@ public static class LineFlexTemplate
           }},
           {{
         ""type"": ""text"",
-            ""text"": ""{{model.Pay}}"",
+            ""text"": ""{model.Pay}"",
             ""align"": ""end"",
             ""size"": ""sm""
           }}
@@ -279,7 +279,7 @@ public static class LineFlexTemplate
             ""action"": {{
             ""type"": ""postback"",
               ""label"": ""確定"",
-              ""data"": ""{{model.AccountId}}""
+              ""data"": ""{model.AccountId}""
             }},
             ""color"": ""#DC3545"",
             ""style"": ""primary"",
