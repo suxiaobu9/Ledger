@@ -11,7 +11,7 @@ public static class LineFlexTemplate
     ""type"": ""flex"",
     ""altText"": ""記帳明細"",
     ""contents"":
-        {message}
+        {{message}}
 }}]
 
 ";
@@ -52,7 +52,7 @@ public static class LineFlexTemplate
           }},
           {{
             ""type"": ""text"",
-            ""text"": ""{model.MonthlyPay}"",
+            ""text"": ""{{model.MonthlyPay}}"",
             ""size"": ""xs"",
             ""color"": ""#aaaaaa"",
             ""align"": ""end""
@@ -75,7 +75,7 @@ public static class LineFlexTemplate
           }},
           {{
             ""type"": ""text"",
-            ""text"": ""{model.MonthlyIncome}"",
+            ""text"": ""{{model.MonthlyIncome}}"",
             ""size"": ""xs"",
             ""color"": ""#aaaaaa"",
             ""align"": ""end""
@@ -107,7 +107,7 @@ public static class LineFlexTemplate
               }},
               {{
                 ""type"": ""text"",
-                ""text"": ""{model.EventName}"",
+                ""text"": ""{{model.EventName}}"",
                 ""size"": ""sm"",
                 ""color"": ""#111111"",
                 ""align"": ""end""
@@ -127,7 +127,7 @@ public static class LineFlexTemplate
               }},
               {{
                 ""type"": ""text"",
-                ""text"": ""{model.Pay}"",
+                ""text"": ""{{model.Pay}}"",
                 ""size"": ""sm"",
                 ""color"": ""#111111"",
                 ""align"": ""end""
@@ -145,20 +145,47 @@ public static class LineFlexTemplate
         ""layout"": ""horizontal"",
         ""contents"": [
           {{
-            ""type"": ""button"",
-            ""action"": {{
-              ""type"": ""postback"",
-              ""label"": ""刪除"",
-              ""data"": ""{model.AccountId}""
-            }},
-            ""margin"": ""5px"",
-            ""style"": ""primary"",
-            ""height"": ""sm"",
-            ""color"": ""#DC3545""
+            ""type"": ""box"",
+            ""layout"": ""vertical"",
+            ""contents"": [
+              {{
+                ""type"": ""button"",
+                ""action"": {{
+                  ""type"": ""postback"",
+                  ""label"": ""刪除"",
+                  ""data"": ""{{model.AccountId}}""
+                }},
+                ""margin"": ""5px"",
+                ""style"": ""primary"",
+                ""height"": ""sm"",
+                ""color"": ""#DC3545""
+              }}
+            ],
+            ""width"": ""90px""
+          }},
+          {{
+            ""type"": ""box"",
+            ""layout"": ""vertical"",
+            ""contents"": [
+              {{
+                ""type"": ""button"",
+                ""action"": {{
+                  ""type"": ""uri"",
+                  ""label"": ""月報"",
+                  ""uri"": ""https://liff.line.me/1657121847-Gb8Va7wg""
+                }},
+                ""margin"": ""5px"",
+                ""height"": ""sm"",
+                ""style"": ""primary"",
+                ""color"": ""#0069d9""
+              }}
+            ],
+            ""width"": ""90px""
           }}
         ],
         ""margin"": ""md"",
-        ""width"": ""90px""
+        ""flex"": 0,
+        ""justifyContent"": ""space-around""
       }},
       {{
         ""type"": ""box"",
@@ -167,7 +194,7 @@ public static class LineFlexTemplate
         ""contents"": [
           {{
             ""type"": ""text"",
-            ""text"": ""{model.CreateDate:yyyy-MM-dd HH:mm}"",
+            ""text"": ""{{model.CreateDate:yyyy-MM-dd HH:mm}}"",
             ""color"": ""#aaaaaa"",
             ""size"": ""xxs"",
             ""align"": ""end""
@@ -213,7 +240,7 @@ public static class LineFlexTemplate
           }},
           {{
         ""type"": ""text"",
-            ""text"": ""{model.EventName}"",
+            ""text"": ""{{model.EventName}}"",
             ""align"": ""end"",
             ""size"": ""sm""
           }}
@@ -232,7 +259,7 @@ public static class LineFlexTemplate
           }},
           {{
         ""type"": ""text"",
-            ""text"": ""{model.Pay}"",
+            ""text"": ""{{model.Pay}}"",
             ""align"": ""end"",
             ""size"": ""sm""
           }}
@@ -252,7 +279,7 @@ public static class LineFlexTemplate
             ""action"": {{
             ""type"": ""postback"",
               ""label"": ""確定"",
-              ""data"": ""{model.AccountId}""
+              ""data"": ""{{model.AccountId}}""
             }},
             ""color"": ""#DC3545"",
             ""style"": ""primary"",
