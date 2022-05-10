@@ -11,7 +11,8 @@ using Microsoft.Extensions.Options;
 namespace Ledger.Server.Controllers;
 
 /// <summary>
-/// ngrok http 5099 -host-header="localhost:5099"
+/// ngrok http 5099 --host-header="localhost:5099"
+/// https://developers.line.biz/console/channel/1657106184/liff/1657106184-R4A80Nrm
 /// </summary>
 [Route("api")]
 public class ApiController : LineWebHookControllerBase

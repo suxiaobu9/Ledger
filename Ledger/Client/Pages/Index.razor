@@ -1,113 +1,147 @@
 ﻿@page "/"
+@using Ledger.Shared.Model
+@using Ledger.Shared.Service.LIFF
+
+@inject HttpClient Http
+@inject LIFFService LIFF
 
 <PageTitle>小記帳</PageTitle>
 
-<div class="flex flex-row justify-center mt-6 font-mono">
-    <div class="md:w-8/12 w-11/12">
-        <div class="w-full border-2 rounded-t-3xl border-amber-600 flex justify-center">
-            <label class="text-xl py-1 font-bold text-amber-600">收入</label>
-        </div>
-        <div class="flex">
-            <div class="w-1/2 border-l-2 border-b-2 border-amber-600 flex justify-center">
-                <label class="text-xl py-1 font-bold text-amber-600">項目</label>
+@if (@monthlyAccounting != null)
+{
+    <div class="flex flex-row justify-center mt-6 font-mono">
+        <div class="md:w-8/12 w-11/12">
+            <div class="w-full border-2 rounded-t-3xl border-amber-600 flex justify-center">
+                <label class="text-xl py-1 font-bold text-amber-600">收入</label>
             </div>
-            <div class="w-1/2 border-r-2 border-b-2 border-amber-600 flex justify-center">
-                <label class="text-xl py-1 font-bold text-amber-600">金額</label>
+            <div class="flex">
+                <div class="w-1/2 border-l-2 border-b-2 border-amber-600 flex justify-center">
+                    <label class="text-xl py-1 font-bold text-amber-600">項目</label>
+                </div>
+                <div class="w-1/2 border-r-2 border-b-2 border-amber-600 flex justify-center">
+                    <label class="text-xl py-1 font-bold text-amber-600">金額</label>
+                </div>
             </div>
-        </div>
-        <div class="flex">
-            <div class="w-1/2 border-l-2 border-r-2 border-amber-600 flex justify-center">
-                <label class="text-xl py-2 font-bold">薪水</label>
-            </div>
-            <div class="w-1/2 border-r-2 border-amber-600 flex justify-center">
-                <label class="text-xl py-2 font-bold">50000</label>
-            </div>
-        </div>
-        <div class="flex">
-            <div class="w-1/2 border-l-2 border-b-2 border-r-2 border-amber-600 flex justify-center">
-                <label class="text-xl py-2 font-bold">路邊撿到</label>
-            </div>
-            <div class="w-1/2 border-r-2 border-b-2 border-amber-600 flex justify-center">
-                <label class="text-xl py-2 font-bold">10</label>
-            </div>
-        </div>
-        <div class="w-full border-x-2 border-b-2 border-amber-600 bg-red-100 flex justify-center">
-            <label class="text-xl py-1 font-bold text-black">總收入 - 50010</label>
-        </div>
+            @if (monthlyAccounting.Income != null)
+            {
+                foreach (var item in monthlyAccounting.Income)
+                {
 
-        <div class="mt-10 w-full border-2 rounded-t-3xl bg-amber-600 flex justify-center">
-            <label class="text-xl py-1 font-bold text-white">支出</label>
-        </div>
-        
-        <div class="flex">
-            <div class="w-1/3 flex justify-center">
-                <label class="text-xl p-2 font-bold text-amber-600">日期</label>
+                    <div class="flex">
+                        <div class="w-1/2 border-l-2 border-r-2 border-amber-600 flex justify-center">
+                            <label class="text-xl py-2 font-bold">@item.Event</label>
+                        </div>
+                        <div class="w-1/2 border-r-2 border-amber-600 flex justify-center">
+                            <label class="text-xl py-2 font-bold">@item.Amount</label>
+                        </div>
+                    </div>
+                }
+            }
+            <div class="w-full border-x-2 border-b-2 border-amber-600 bg-red-100 flex justify-center">
+                <label class="text-xl py-1 font-bold text-black">總收入 - @monthlyAccounting.TotalIncome</label>
             </div>
-            <div class="w-1/3 flex justify-center">
-                <label class="text-xl p-2 font-bold text-amber-600">內容</label>
+
+            <div class="mt-10 w-full border-2 rounded-t-3xl bg-amber-600 flex justify-center">
+                <label class="text-xl py-1 font-bold text-white">總花費 - @monthlyAccounting.TotalOutlay</label>
             </div>
-            <div class="w-1/3 flex justify-center">
-                <label class="text-xl p-2 font-bold text-amber-600">金額</label>
+
+            <div class="flex">
+                <div class="w-1/3 flex justify-center">
+                    <label class="text-xl p-2 font-bold text-amber-600">類型</label>
+                </div>
+                <div class="w-1/3 flex justify-center">
+                    <label class="text-xl p-2 font-bold text-amber-600">總金額</label>
+                </div>
+                <div class="w-1/3 flex justify-center">
+                    <label class="text-xl p-2 font-bold text-amber-600">占比</label>
+                </div>
             </div>
-        </div>
-        <div class="flex">
-            <div class="w-1/3 flex justify-center bg-orange-100">
-                <label class="text-xl p-2 font-bold">3/15</label>
+            @if (monthlyAccounting.ReportDetails != null)
+            {
+                foreach (var item in monthlyAccounting.ReportDetails)
+                {
+                    <div class="flex">
+                        <div class="w-1/3 flex justify-center bg-orange-100">
+                            <label class="text-xl p-2 font-bold">@item.Event</label>
+                        </div>
+                        <div class="w-1/3 flex justify-center bg-orange-100">
+                            <label class="text-xl p-2 font-bold">@item.Total</label>
+                        </div>
+                        <div class="w-1/3 flex justify-center bg-orange-100">
+                            <label class="text-xl p-2 font-bold">@item.Proportion%</label>
+                        </div>
+                    </div>
+                }
+            }
+
+            <div class="w-full border-2 bg-indigo-600 flex justify-center">
+                <label class="text-xl py-1 font-bold text-white">支出</label>
             </div>
-            <div class="w-1/3 flex justify-center bg-orange-100">
-                <label class="text-xl p-2 font-bold">早餐</label>
+            <div class="flex">
+                <div class="w-1/3 flex justify-center">
+                    <label class="text-xl p-2 font-bold text-amber-600">日期</label>
+                </div>
+                <div class="w-1/3 flex justify-center">
+                    <label class="text-xl p-2 font-bold text-amber-600">內容</label>
+                </div>
+                <div class="w-1/3 flex justify-center">
+                    <label class="text-xl p-2 font-bold text-amber-600">金額</label>
+                </div>
             </div>
-            <div class="w-1/3 flex justify-center bg-orange-100">
-                <label class="text-xl p-2 font-bold">72</label>
-            </div>
-        </div>
-        <div class="flex">
-            <div class="w-1/3 flex justify-center bg-rose-100">
-                <label class="text-xl p-2 font-bold">3/15</label>
-            </div>
-            <div class="w-1/3 flex justify-center bg-rose-100">
-                <label class="text-xl p-2 font-bold">晚餐</label>
-            </div>
-            <div class="w-1/3 flex justify-center bg-rose-100">
-                <label class="text-xl p-2 font-bold">100</label>
-            </div>
-        </div>
-        <div class="w-full border-2 bg-indigo-600 flex justify-center">
-            <label class="text-xl py-1 font-bold text-white">總花費 - 172</label>
-        </div>
-         <div class="flex">
-            <div class="w-1/3 flex justify-center">
-                <label class="text-xl p-2 font-bold text-amber-600">類型</label>
-            </div>
-            <div class="w-1/3 flex justify-center">
-                <label class="text-xl p-2 font-bold text-amber-600">總金額</label>
-            </div>
-            <div class="w-1/3 flex justify-center">
-                <label class="text-xl p-2 font-bold text-amber-600">占比</label>
-            </div>
-        </div>
-        <div class="flex">
-            <div class="w-1/3 flex justify-center bg-orange-100">
-                <label class="text-xl p-2 font-bold">晚餐</label>
-            </div>
-            <div class="w-1/3 flex justify-center bg-orange-100">
-                <label class="text-xl p-2 font-bold">100</label>
-            </div>
-            <div class="w-1/3 flex justify-center bg-orange-100">
-                <label class="text-xl p-2 font-bold">58.1%</label>
-            </div>
-        </div>
-        <div class="flex">
-            <div class="w-1/3 flex justify-center bg-rose-100">
-                <label class="text-xl p-2 font-bold">早餐</label>
-            </div>
-            <div class="w-1/3 flex justify-center bg-rose-100">
-                <label class="text-xl p-2 font-bold">72</label>
-            </div>
-            <div class="w-1/3 flex justify-center bg-rose-100">
-                <label class="text-xl p-2 font-bold">41.8%</label>
-            </div>
+
+            @if (monthlyAccounting.Outlay != null)
+            {
+                foreach (var item in monthlyAccounting.Outlay)
+                {
+                    <div class="flex">
+                        <div class="w-1/3 flex justify-center bg-orange-100">
+                            <label class="text-xl p-2 font-bold">@item.Date.ToString("MM/dd")</label>
+                        </div>
+                        <div class="w-1/3 flex justify-center bg-orange-100">
+                            <label class="text-xl p-2 font-bold">@item.Event</label>
+                        </div>
+                        <div class="w-1/3 flex justify-center bg-orange-100">
+                            <label class="text-xl p-2 font-bold">@item.Amount</label>
+                        </div>
+                    </div>
+                }
+            }
         </div>
     </div>
-</div>
+}
 
+@code {
+    private string? LiffId;
+    private string? AccessTokend;
+    private string? IDToken;
+    private UserProfile? userProfile;
+    private MonthlyAccountingVm? monthlyAccounting;
+
+    protected override async Task OnInitializedAsync()
+    {
+        LiffId = await Http.GetStringAsync("LIFF/GetLIFFId");
+
+        await LIFF.InitAsync(LiffId);
+
+        if (!await LIFF.IsLoggedInAsync())
+        {
+            await LIFF.LoginAsync();
+            return;
+        }
+
+        IDToken = await LIFF.GetIDTokenAsync();
+
+        Http.DefaultRequestHeaders.Add("Authorization", $"Bearer {IDToken}");
+
+        var userProfileTask = Http.GetFromJsonAsync<UserProfile>("AccountBook/UserProfile");
+        var monthlyAccountingTask = Http.GetFromJsonAsync<MonthlyAccountingVm>("AccountBook/MonthlyAccounting");
+
+        userProfile = await userProfileTask;
+        monthlyAccounting = await monthlyAccountingTask;
+
+        await base.OnInitializedAsync();
+    }
+
+
+
+}

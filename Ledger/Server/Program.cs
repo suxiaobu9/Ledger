@@ -1,7 +1,10 @@
 using Ledger.Server;
+using Ledger.Server.Middleware;
+using Ledger.Server.Service.LIFF;
 using Ledger.Shared.Model;
 using Ledger.Shared.Service.Bookkeeping;
 using Ledger.Shared.Service.Delete;
+using Ledger.Shared.Service.LIFF;
 using Ledger.Shared.Service.Member;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +16,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<BookkeepingContext>(option => option.UseSqlServer(builder.Configuration["ConnectionStrings:DefaultConnection"]));
 builder.Services.Configure<LineBot>(builder.Configuration.GetSection("LineBot"));
+builder.Services.Configure<LIFFInfo>(builder.Configuration.GetSection("LIFF"));
 
 //每次Call Method都注入一個新的
 //services.AddTransient
@@ -25,6 +29,9 @@ builder.Services.Configure<LineBot>(builder.Configuration.GetSection("LineBot"))
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IBookkeepingService, BookkeepingService>();
 builder.Services.AddScoped<IDeleteAccountService, DeleteAccountService>();
+builder.Services.AddScoped<UserProfileService>();
+
+builder.Services.AddHttpClient();
 
 var app = builder.Build();
 
@@ -46,6 +53,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseLIFFMiddleware();
 
 app.MapRazorPages();
 app.MapControllers();
