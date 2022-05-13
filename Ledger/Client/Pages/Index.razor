@@ -111,15 +111,11 @@
 }
 
 @code {
-    private string? LiffId;
-    private string? AccessTokend;
-    private string? IDToken;
-    private UserProfile? userProfile;
     private MonthlyAccountingVm? monthlyAccounting;
 
     protected override async Task OnInitializedAsync()
     {
-        LiffId = await Http.GetStringAsync("LIFF/GetLIFFId");
+        var LiffId = await Http.GetStringAsync("LIFF/GetLIFFId");
 
         await LIFF.InitAsync(LiffId);
 
@@ -129,19 +125,15 @@
             return;
         }
 
-        IDToken = await LIFF.GetIDTokenAsync();
+        var IDToken = await LIFF.GetIDTokenAsync();
 
         Http.DefaultRequestHeaders.Add("Authorization", $"Bearer {IDToken}");
 
-        var userProfileTask = Http.GetFromJsonAsync<UserProfile>("AccountBook/UserProfile");
         var monthlyAccountingTask = Http.GetFromJsonAsync<MonthlyAccountingVm>("AccountBook/MonthlyAccounting");
 
-        userProfile = await userProfileTask;
         monthlyAccounting = await monthlyAccountingTask;
 
         await base.OnInitializedAsync();
     }
-
-
 
 }
