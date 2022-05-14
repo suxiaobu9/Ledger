@@ -15,25 +15,28 @@ namespace Ledger.Server.Controllers;
 [Route("api")]
 public class ApiController : LineWebHookControllerBase
 {
-    private readonly UserService _userService;
-    private readonly BookkeepingService _bookkeepingService;
-    private readonly DeleteAccountService _deleteAccountService;
+    private readonly UserService userService;
+    private readonly BookkeepingService bookkeepingService;
+    private readonly DeleteAccountService deleteAccountService;
+    private readonly LIFFInfo LIFFInfo;
 
     public ApiController(UserService userService,
                         BookkeepingService bookkeepingService,
                         DeleteAccountService deleteAccountService,
-                        IOptions<LineBot> linebot)
+                        IOptions<LineBot> linebot,
+                        IOptions<LIFFInfo> LIFFInfo)
     {
-        _userService = userService;
-        _bookkeepingService = bookkeepingService;
-        _deleteAccountService = deleteAccountService;
+        this.userService = userService;
+        this.bookkeepingService = bookkeepingService;
+        this.deleteAccountService = deleteAccountService;
         this.ChannelAccessToken = linebot.Value.ChannelAccessToken;
+        this.LIFFInfo = LIFFInfo.Value;
     }
 
     [HttpPost]
     [Route("Accounting")]
     [LineVerifySignature]
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Accounting()
     {
         if (this.ReceivedMessage == null)
             return Ok();
@@ -49,7 +52,7 @@ public class ApiController : LineWebHookControllerBase
 
             var lineSourceUser = lineEvents.Select(x => x.source.userId).Distinct().ToArray();
 
-            var users = await _userService.GetUsers(lineSourceUser);
+            var users = await userService.GetUsers(lineSourceUser);
 
             foreach (var item in lineEvents)
             {
@@ -63,7 +66,7 @@ public class ApiController : LineWebHookControllerBase
                     continue;
                 }
 
-                var (isFlex, message) = await _bookkeepingService.Accounting(item.message.text, user);
+                var (isFlex, message) = await bookkeepingService.Accounting(item.message.text, user);
 
                 if (isFlex)
                     this.ReplyMessageWithJSON(item.replyToken, message);
@@ -73,7 +76,7 @@ public class ApiController : LineWebHookControllerBase
         }
         catch (Exception ex)
         {
-            var admin = await _userService.GetAdmin();
+            var admin = await userService.GetAdmin();
 
             if (admin != null)
                 this.PushMessage(admin.LineUserId, ex.Message);
@@ -94,7 +97,7 @@ public class ApiController : LineWebHookControllerBase
         if (!convertSuccess)
             return;
 
-        var (isConfirm, confirmModel) = await _deleteAccountService.IsConfirm(accountId);
+        var (isConfirm, confirmModel) = await deleteAccountService.IsConfirm(accountId);
 
         if (confirmModel == null)
             return;
@@ -105,8 +108,14 @@ public class ApiController : LineWebHookControllerBase
             return;
         }
 
-        var message = await _bookkeepingService.DeleteAccounting(confirmModel, user);
+        var message = await bookkeepingService.DeleteAccounting(confirmModel, user);
 
         ReplyMessage(lineEvent.replyToken, message);
+    }
+
+    [HttpGet("GetLIFFId")]
+    public string? GetLIFFId()
+    {
+        return LIFFInfo.LiffId;
     }
 }

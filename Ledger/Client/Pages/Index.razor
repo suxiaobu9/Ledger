@@ -115,7 +115,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var LiffId = await Http.GetStringAsync("LIFF/GetLIFFId");
+        var LiffId = await Http.GetStringAsync("Api/GetLIFFId");
 
         await LIFF.InitAsync(LiffId);
 
@@ -129,9 +129,7 @@
 
         Http.DefaultRequestHeaders.Add("Authorization", $"Bearer {IDToken}");
 
-        var monthlyAccountingTask = Http.GetFromJsonAsync<MonthlyAccountingVm>("AccountBook/MonthlyAccounting");
-
-        monthlyAccounting = await monthlyAccountingTask;
+        monthlyAccounting = await Http.GetFromJsonAsync<MonthlyAccountingVm?>("AccountBook/MonthlyAccounting");
 
         await base.OnInitializedAsync();
     }
