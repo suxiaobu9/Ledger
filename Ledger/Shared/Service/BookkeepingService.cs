@@ -106,7 +106,7 @@ public class BookkeepingService
             UserId = user.Id,
             Event = eventName,
         };
-        _db.Accountings.Add(accounting);
+        await _db.Accountings.AddAsync(accounting);
 
         await _db.SaveChangesAsync();
 
