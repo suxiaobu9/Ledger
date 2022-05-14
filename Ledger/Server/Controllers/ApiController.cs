@@ -49,7 +49,9 @@ public class ApiController : LineWebHookControllerBase
                               x.message.type == "text")))
                   .ToArray();
 
-            var users = await _userService.GetUsers(lineEvents.Select(x => x.source.userId));
+            var lineSourceUser = lineEvents.Select(x => x.source.userId).Distinct().ToArray();
+
+            var users = await _userService.GetUsers(lineSourceUser);
 
             foreach (var item in lineEvents)
             {
