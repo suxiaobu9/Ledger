@@ -1,6 +1,6 @@
 ﻿using Microsoft.JSInterop;
 
-namespace Ledger.Shared.Service.LIFF;
+namespace Ledger.Shared.Service;
 
 public class LIFFService
 {

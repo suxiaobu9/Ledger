@@ -41,4 +41,5 @@ public class AccountingFlexMessageModel
     /// 可刪除期限
     /// </summary>
     public DateTime? Deadline { get; set; }
+
 }

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ledger.Shared.Service.Delete;
+namespace Ledger.Shared.Service;
 
 public class DeleteAccountService 
 {

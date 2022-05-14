@@ -1,5 +1,5 @@
 using Ledger.Client;
-using Ledger.Shared.Service.LIFF;
+using Ledger.Shared.Service;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 

@@ -1,7 +1,7 @@
 ﻿using Ledger.Server;
 using Microsoft.EntityFrameworkCore;
 
-namespace Ledger.Shared.Service.Member;
+namespace Ledger.Shared.Service;
 
 public class UserService
 {

@@ -4,7 +4,7 @@ using Ledger.Shared.StaticCode;
 using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
 
-namespace Ledger.Shared.Service.Bookkeeping;
+namespace Ledger.Shared.Service;
 
 public class BookkeepingService
 {

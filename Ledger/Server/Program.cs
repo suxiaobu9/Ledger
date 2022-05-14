@@ -2,10 +2,7 @@ using Ledger.Server;
 using Ledger.Server.Middleware;
 using Ledger.Server.Service.LIFF;
 using Ledger.Shared.Model;
-using Ledger.Shared.Service.Bookkeeping;
-using Ledger.Shared.Service.Delete;
-using Ledger.Shared.Service.LIFF;
-using Ledger.Shared.Service.Member;
+using Ledger.Shared.Service;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
