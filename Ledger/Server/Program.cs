@@ -26,9 +26,9 @@ builder.Services.Configure<LIFFInfo>(builder.Configuration.GetSection("LIFF"));
 
 //只會在站台啟動時注入一個新的
 //services.AddSingleton
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IBookkeepingService, BookkeepingService>();
-builder.Services.AddScoped<IDeleteAccountService, DeleteAccountService>();
+builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<BookkeepingService>();
+builder.Services.AddScoped<DeleteAccountService>();
 builder.Services.AddScoped<UserProfileService>();
 
 builder.Services.AddHttpClient();

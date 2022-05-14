@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ledger.Shared.Service.Member;
 
-public class UserService : IUserService
+public class UserService
 {
     private readonly BookkeepingContext _db;
     public UserService(BookkeepingContext db)

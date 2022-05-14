@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Ledger.Shared.Service.Delete;
 
-public class DeleteAccountService : IDeleteAccountService
+public class DeleteAccountService 
 {
     private readonly BookkeepingContext _db;
     public DeleteAccountService(BookkeepingContext db)

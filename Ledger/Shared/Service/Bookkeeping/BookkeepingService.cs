@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace Ledger.Shared.Service.Bookkeeping;
 
-public class BookkeepingService : IBookkeepingService
+public class BookkeepingService
 {
     private readonly BookkeepingContext _db;
 

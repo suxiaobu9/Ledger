@@ -17,13 +17,13 @@ namespace Ledger.Server.Controllers;
 [Route("api")]
 public class ApiController : LineWebHookControllerBase
 {
-    private readonly IUserService _userService;
-    private readonly IBookkeepingService _bookkeepingService;
-    private readonly IDeleteAccountService _deleteAccountService;
+    private readonly UserService _userService;
+    private readonly BookkeepingService _bookkeepingService;
+    private readonly DeleteAccountService _deleteAccountService;
 
-    public ApiController(IUserService userService,
-                        IBookkeepingService bookkeepingService,
-                        IDeleteAccountService deleteAccountService,
+    public ApiController(UserService userService,
+                        BookkeepingService bookkeepingService,
+                        DeleteAccountService deleteAccountService,
                         IOptions<LineBot> linebot)
     {
         _userService = userService;
